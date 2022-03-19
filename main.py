@@ -1,3 +1,5 @@
+import os
+
 import cvzone
 import cv2
 
@@ -51,11 +53,18 @@ cap.set(4, screen_height)
 success, imgBack = cap.read()
 
 total_no_of_cells = 12
-cell_width = screen_width / total_no_of_cells * 0.65
-cell_height = screen_height / total_no_of_cells * 0.65
+cell_width = int(screen_width / total_no_of_cells * 0.65)
+cell_height = int(screen_height / total_no_of_cells * 0.65)
 
 logoBtn = ImageButton("components/logo.png")
 basketBtn = ImageButton("components/basket.png")
+
+storesPath = "stores"
+storeNameList = os.listdir(storesPath)
+headers = []
+for storeImagePath in storeNameList:
+    storeBtn = ImageButton(f"{storesPath}/{storeImagePath}")
+    headers.append(storeBtn)
 
 # imgLogo = cv2.imread("components/logo.png", cv2.IMREAD_UNCHANGED)
 # imgLogo = cv2.resize(imgLogo, (0, 0), None, 0.65, 0.65)
@@ -123,7 +132,9 @@ while cap.isOpened() and success:
     # imgResult = cvzone.overlayPNG(imgResult, imgBasket, [wback - wbasket, 0])
 
     # Header and Footer
-    imgResult = cvzone.overlayPNG(imgResult, imgHeader, [wback - wheader - 220, 0])
+    for storeIndex, storeImgBtn in enumerate(headers):
+        imgResult = storeImgBtn.overlay(imgResult, (200 * (storeIndex + 1)), 0)
+
     imgResult = cvzone.overlayPNG(imgResult, imgFooter, [0, hback - hfooter])
 
     # XL Product Info Box
