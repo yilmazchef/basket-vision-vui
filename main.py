@@ -2,10 +2,10 @@ import os
 
 import cvzone
 import cv2
+from cvzone.HandTrackingModule import HandDetector
 
 import mediapipe as mp
 import math
-from cvzone.HandTrackingModule import HandDetector
 
 
 class ImageButton:
@@ -66,55 +66,28 @@ for storeImagePath in storeNameList:
     storeBtn = ImageButton(f"{storesPath}/{storeImagePath}")
     headers.append(storeBtn)
 
-# imgLogo = cv2.imread("components/logo.png", cv2.IMREAD_UNCHANGED)
-# imgLogo = cv2.resize(imgLogo, (0, 0), None, 0.65, 0.65)
+footer = ImageButton("components/footer.png")
 
-# imgBasket = cv2.imread("components/basket.png", cv2.IMREAD_UNCHANGED)
-# imgBasket = cv2.resize(imgBasket, (0, 0), None, 0.65, 0.65)
+buttonXL = ImageButton("products/large_product.png")
 
-imgHeader = cv2.imread("components/header.png", cv2.IMREAD_UNCHANGED)
-imgHeader = cv2.resize(imgHeader, (0, 0), None, 0.65, 0.65)
+prodLeft01 = ImageButton("products/product_left_01.png")
+prodLeft02 = ImageButton("products/product_left_02.png")
+prodRight01 = ImageButton("products/product_right_01.png")
+prodRight02 = ImageButton("products/product_right_02.png")
 
-imgFooter = cv2.imread("components/footer.png", cv2.IMREAD_UNCHANGED)
-imgFooter = cv2.resize(imgFooter, (0, 0), None, 0.65, 0.65)
+prevBtn = ImageButton("components/previous_button.png")
+nextBtn = ImageButton("components/next_button.png")
 
-imgPhotoXL = cv2.imread("products/large_product.png", cv2.IMREAD_UNCHANGED)
-imgPhotoXL = cv2.resize(imgPhotoXL, (0, 0), None, 0.65, 0.65)
-
-imgProductLeft01 = cv2.imread("products/product_left_01.png", cv2.IMREAD_UNCHANGED)
-imgProductLeft01 = cv2.resize(imgProductLeft01, (0, 0), None, 0.65, 0.65)
-
-imgProductLeft02 = cv2.imread("products/product_left_02.png", cv2.IMREAD_UNCHANGED)
-imgProductLeft02 = cv2.resize(imgProductLeft02, (0, 0), None, 0.65, 0.65)
-
-imgPreviousButton = cv2.imread("components/previous_button.png", cv2.IMREAD_UNCHANGED)
-imgPreviousButton = cv2.resize(imgPreviousButton, (0, 0), None, 0.65, 0.65)
-
-imgProductRight01 = cv2.imread("products/product_right_01.png", cv2.IMREAD_UNCHANGED)
-imgProductRight01 = cv2.resize(imgProductRight01, (0, 0), None, 0.65, 0.65)
-
-imgProductRight02 = cv2.imread("products/product_right_02.png", cv2.IMREAD_UNCHANGED)
-imgProductRight02 = cv2.resize(imgProductRight02, (0, 0), None, 0.65, 0.65)
-
-imgNextButton = cv2.imread("components/next_button.png", cv2.IMREAD_UNCHANGED)
-imgNextButton = cv2.resize(imgNextButton, (0, 0), None, 0.65, 0.65)
+# previousButton = cv2.imread("components/previous_button.png", cv2.IMREAD_UNCHANGED)
+# previousButton = cv2.resize(previousButton, (0, 0), None, 0.65, 0.65)
+#
+# imgNextButton = cv2.imread("components/next_button.png", cv2.IMREAD_UNCHANGED)
+# imgNextButton = cv2.resize(imgNextButton, (0, 0), None, 0.65, 0.65)
 
 hback, wback, cback = imgBack.shape
 
-# hlogo, wlogo, clogo = imgLogo.shape
-# hbasket, wbasket, cbasket = imgBasket.shape
-
-hheader, wheader, cheader = imgHeader.shape
-hfooter, wfooter, cfooter = imgFooter.shape
-hphotoXL, wphotoXL, cphotoXL = imgPhotoXL.shape
-
-hProdL01, wProdL01, cProdL01 = imgProductLeft01.shape
-hProdL02, wProdL02, cProdL02 = imgProductLeft02.shape
-hProdR01, wProdR01, cProdR01 = imgProductRight01.shape
-hProdR02, wProdR02, cProdR02 = imgProductRight02.shape
-
-hNextBtn, wNextBtn, cNextBtn = imgNextButton.shape
-hPrevBtn, wPrevBtn, cPrevBtn = imgPreviousButton.shape
+# hPrevBtn, wPrevBtn, cPrevBtn = previousButton.shape
+# hNextBtn, wNextBtn, cNextBtn = imgNextButton.shape
 
 detector = HandDetector(detectionCon=0.8, maxHands=2)
 
@@ -123,28 +96,27 @@ while cap.isOpened() and success:
     success, imgBack = cap.read()
     imgBack = cv2.flip(imgBack, 1)
 
-    # using OOP components
     imgResult = logoBtn.overlay(imgBack, 0, 0)
     imgResult = basketBtn.overlay(imgResult, wback - basketBtn.w, 0)
-
-    # WebCam or Background Stream
-    # imgResult = cvzone.overlayPNG(imgBack, imgLogo, [0, 0])
-    # imgResult = cvzone.overlayPNG(imgResult, imgBasket, [wback - wbasket, 0])
 
     # Header and Footer
     for storeIndex, storeImgBtn in enumerate(headers):
         imgResult = storeImgBtn.overlay(imgResult, (200 * (storeIndex + 1)), 0)
 
-    imgResult = cvzone.overlayPNG(imgResult, imgFooter, [0, hback - hfooter])
+    imgResult = footer.overlay(imgResult, 0, hback - footer.h)
 
     # XL Product Info Box
-    imgResult = cvzone.overlayPNG(imgResult, imgPhotoXL, [(wback - wphotoXL) // 2, (hback - hphotoXL) // 2])
+    imgResult = buttonXL.overlay(imgResult, (wback - buttonXL.w) // 2, (hback - buttonXL.h) // 2)
 
     # Products with Thumbnail Photos
-    imgResult = cvzone.overlayPNG(imgResult, imgProductLeft01, [0, 200])
-    imgResult = cvzone.overlayPNG(imgResult, imgProductLeft02, [0, 400])
-    imgResult = cvzone.overlayPNG(imgResult, imgProductRight01, [wback - wProdR01, 200])
-    imgResult = cvzone.overlayPNG(imgResult, imgProductRight02, [wback - wProdR02, 400])
+    imgResult = prodLeft01.overlay(imgResult, 0, 140)
+    imgResult = prodLeft02.overlay(imgResult, 0, 280)
+    imgResult = prodRight01.overlay(imgResult, wback - prodRight01.w, 140)
+    imgResult = prodRight02.overlay(imgResult, wback - prodRight02.w, 280)
+
+    # prev and next buttons
+    imgResult = prevBtn.overlay(imgResult, 0, 480)
+    imgResult = nextBtn.overlay(imgResult, wback - nextBtn.w, 480)
 
     # detection hands
     hands, imgBack = detector.findHands(imgBack, flipType=False)
