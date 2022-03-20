@@ -38,14 +38,14 @@ Go to http://localhost:8080 and you should see the app running.
 
 ## Setup Environment
 
-### installation:
-git clone https://github.com/yilmazchef/basket-vision-vui
-cd basket-vision-vui
-pip install opencv-python
-pip install Pillow
-pip install mediapipe
-pip install cvzone
-pip install numpy
+### installation: <br/>
+git clone https://github.com/yilmazchef/basket-vision-vui <br/>
+cd basket-vision-vui <br/>
+pip install opencv-python <br/>
+pip install Pillow <br/>
+pip install mediapipe <br/>
+pip install cvzone <br/> 
+pip install numpy <br/>
 
 ### running the application:
 python main.py
