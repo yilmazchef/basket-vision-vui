@@ -1,11 +1,36 @@
 import os
+from time import sleep
 
 import cvzone
 import cv2
 from cvzone.HandTrackingModule import HandDetector
+import products
 
 import mediapipe as mp
 import math
+from bridge import Bridge
+
+
+class Label:
+    def __init__(self, x, y, w, h, v, s):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.v = v
+        self.s = s
+
+    def draw(self, img):
+        cv2.putText(img, self.v, (self.x + 25, self.y + 40), cv2.FONT_HERSHEY_PLAIN, self.s, (255, 255, 255), self.s)
+
+    def resize(self, w, h, img):
+        cv2.putText(img, self.v, (self.x + w, self.y + h), cv2.FONT_HERSHEY_PLAIN, self.s, (255, 255, 255), self.s)
+
+    def color(self, rgb, img):
+        cv2.putText(img, self.v, (self.x + 25, self.y + 40), cv2.FONT_HERSHEY_PLAIN, self.s, rgb, self.s)
+
+    def text(self, value, img):
+        cv2.putText(img, value, (self.x + 25, self.y + 40), cv2.FONT_HERSHEY_PLAIN, self.s, (255, 255, 255), self.s)
 
 
 class ImageButton:
@@ -31,11 +56,13 @@ class ImageButton:
         return cvzone.overlayPNG(imgBack, self.img, [posX, posY])
 
     def focused(self, cursorX, cursorY):
-        self.img = cv2.resize(self.img, (0, 0), None, 1.20, 1.20)
         return self.x < cursorX < self.x + self.w and self.y < cursorY < self.y + self.h
 
-    def onClick(self, clickEvent):
-        self.clickEvent = clickEvent
+    def clicked(self, cursorX, cursorY):
+        if self.x < cursorX < self.x + self.w and self.y < cursorY < self.y + self.h:
+            return True
+        else:
+            return False
 
 
 fhd_width = 1920
@@ -67,7 +94,6 @@ for storeImagePath in storeNameList:
     headers.append(storeBtn)
 
 footer = ImageButton("components/footer.png")
-
 buttonXL = ImageButton("products/large_product.png")
 
 prodLeft01 = ImageButton("products/product_left_01.png")
@@ -80,7 +106,23 @@ nextBtn = ImageButton("components/next_button.png")
 
 hback, wback, cback = imgBack.shape
 
-detector = HandDetector(detectionCon=0.8, maxHands=2)
+button_components = [
+    ImageButton("components/logo.png"),
+    ImageButton("components/footer.png"),
+    ImageButton("components/basket.png"),
+    ImageButton("components/previous_button.png"),
+    ImageButton("components/next_button.png"),
+    ImageButton("products/product_left_01.png"),
+    ImageButton("products/product_left_02.png"),
+    ImageButton("products/product_right_01.png"),
+    ImageButton("products/product_right_02.png"),
+    ImageButton("products/large_product.png")
+]
+
+# to avoid duplicated value inside calculator in event writing
+delay_counter = 0
+
+detector = HandDetector(detectionCon=0.8, maxHands=1)
 
 while cap.isOpened() and success:
 
@@ -116,6 +158,24 @@ while cap.isOpened() and success:
         landmarks = hands[0]["lmList"]
         distance, _, imgResult = detector.findDistance(landmarks[8][:2], landmarks[12][:2], imgResult)
         x, y = landmarks[8][:2]
+
+        if distance < 70:
+            # button click send event when focused
+            for button in button_components:
+                if button.clicked(x, y) and delay_counter == 0:
+                    print(f"button on {x, y} clicked!")
+                    cvzone.putTextRect(imgResult, "Added to basket", )
+                    # backendAPI = Bridge("POST", 0)
+                    # backendAPI.postBasket()
+                    # sleep(1)
+
+        # avoid duplicates
+        if delay_counter != 0:
+            delay_counter += 1
+            # i did not add value into display calculator
+            # after passing 10 frames
+            if delay_counter > 20:
+                delay_counter = 0
 
     cv2.imshow("Image", imgResult)
     key = cv2.waitKey(1)

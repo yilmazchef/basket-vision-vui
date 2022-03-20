@@ -1,5 +1,3 @@
-import requests
-
 pLeft01 = {
     "customer": {
         "title": "Mr.",
@@ -374,43 +372,3 @@ pXL = {
         }
     ]
 }
-
-
-class Bridge:
-    def __init__(self, action, buttonIndex):
-        self.action = action
-        self.buttonIndex = buttonIndex
-
-    def postBasket(self):
-        if self.action == "POST" and self.buttonIndex == 1:
-            post_new_basket_endpoint = "http://localhost:8888/api/v1/basket/add/one"
-            print("Adding new basket item...")
-            response = requests.post(post_new_basket_endpoint, json=pLeft01)
-            print(response.json())
-            print(response.status_code)
-        elif self.action == "POST" and self.buttonIndex == 2:
-            post_new_basket_endpoint = "http://localhost:8888/api/v1/basket/add/one"
-            print("Adding new basket item...")
-            response = requests.post(post_new_basket_endpoint, json=pLeft02)
-            print(response.json())
-            print(response.status_code)
-        elif self.action == "POST" and self.buttonIndex == 3:
-            post_new_basket_endpoint = "http://localhost:8888/api/v1/basket/add/one"
-            print("Adding new basket item...")
-            response = requests.post(post_new_basket_endpoint, json=pRight01)
-            print(response.json())
-            print(response.status_code)
-        elif self.action == "POST" and self.buttonIndex == 4:
-            post_new_basket_endpoint = "http://localhost:8888/api/v1/basket/add/one"
-            print("Adding new basket item...")
-            response = requests.post(post_new_basket_endpoint, json=pRight02)
-            print(response.json())
-            print(response.status_code)
-
-# get_all_baskets_api_endpoint = "http://localhost:8888/api/v1/basket/get/all?pageNo=1&pageSize=50"
-# response = requests.get(get_all_baskets_api_endpoint)
-#
-# # get all basket
-# print("Getting all baskets...")
-# print(response.json())
-# print(response.status_code)
