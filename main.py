@@ -78,16 +78,7 @@ prodRight02 = ImageButton("products/product_right_02.png")
 prevBtn = ImageButton("components/previous_button.png")
 nextBtn = ImageButton("components/next_button.png")
 
-# previousButton = cv2.imread("components/previous_button.png", cv2.IMREAD_UNCHANGED)
-# previousButton = cv2.resize(previousButton, (0, 0), None, 0.65, 0.65)
-#
-# imgNextButton = cv2.imread("components/next_button.png", cv2.IMREAD_UNCHANGED)
-# imgNextButton = cv2.resize(imgNextButton, (0, 0), None, 0.65, 0.65)
-
 hback, wback, cback = imgBack.shape
-
-# hPrevBtn, wPrevBtn, cPrevBtn = previousButton.shape
-# hNextBtn, wNextBtn, cNextBtn = imgNextButton.shape
 
 detector = HandDetector(detectionCon=0.8, maxHands=2)
 
