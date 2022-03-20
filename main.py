@@ -164,7 +164,7 @@ while cap.isOpened() and success:
             for button in button_components:
                 if button.clicked(x, y) and delay_counter == 0:
                     print(f"button on {x, y} clicked!")
-                    cvzone.putTextRect(imgResult, "Added to basket", )
+                    # cvzone.putTextRect(imgResult, "Added to basket", )
                     # backendAPI = Bridge("POST", 0)
                     # backendAPI.postBasket()
                     # sleep(1)
