@@ -41,10 +41,14 @@ Go to http://localhost:8080 and you should see the app running.
 ### installation:
 git clone https://github.com/yilmazchef/basket-vision-vui
 cd basket-vision-vui
-mvn clean install
+pip install opencv-python
+pip install Pillow
+pip install mediapipe
+pip install cvzone
+pip install numpy
 
 ### running the application:
-mvn spring-boot:run
+python main.py
 
 ### project-structure:
 basket-vision-vui
