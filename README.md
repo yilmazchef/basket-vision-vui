@@ -39,16 +39,15 @@ Go to http://localhost:8080 and you should see the app running.
 ## Setup Environment
 
 ### installation:
-git clone https://github.com/yilmazchef/basket-vision!
-cd magic-basket
-npm install
+git clone https://github.com/yilmazchef/basket-vision-vui
+cd basket-vision-vui
+mvn clean install
 
 ### running the application:
-cd magic-basket
-npm run dev
+mvn spring-boot:run
 
 ### project-structure:
-magic-basket
+basket-vision-vui
 * .run
 * src\main
   * java
@@ -59,13 +58,13 @@ magic-basket
     * App.java
   * resources
 * target
-  * .dockerignore
-  * .github
-  * app.json
-  * docker-compose.yml
-  * Dockerfile
-  * pom.xml
-  * README.md
+* .dockerignore
+* .github
+* app.json
+* docker-compose.yml
+* Dockerfile
+* pom.xml
+* README.md
 
 ## Technology-tool-Stack
 
